@@ -33,8 +33,9 @@ public class Humain {
 	}
 	
 	public void acheter(String bien, int prix) {
-		assert prix >= 0;
-		if (prix > argent) {
+		if (prix < 0) {
+			throw new IllegalArgumentException("Prix invalide : " + prix); 
+		} else if (prix > argent) {
 			parler("Je n'ai plus que " + argent + " sous en poche. "
 					+ "Je ne peux même pas m'offrir " + bien + " à " + prix + " sous.");
 		} else {
