@@ -4,6 +4,8 @@ public class Humain {
 	private String nom;
 	private String boisson;
 	protected int argent;
+	protected int nbConnaissance = 0;
+	protected Humain[] memoire = new Humain[30];
 	
 	public Humain(String nom, String boisson, int argent) {
 		this.nom = nom;
@@ -52,4 +54,42 @@ public class Humain {
 	private void perdreArgent(int perte) {
 		this.argent -= perte;
 	}
+	
+	private void memoriser(Humain autreHumain) {
+		if (nbConnaissance == memoire.length) {
+			for (int i = 0; i < memoire.length - 1; i++) {
+				memoire[i] = memoire[i + 1];
+			}
+			memoire[memoire.length - 1] = autreHumain;
+		} else {
+			memoire[nbConnaissance++] = autreHumain;
+		}
+	}
+	
+	private void repondre(Humain autreHumain) {
+		direBonjour();
+		memoriser(autreHumain);
+	}
+	
+	public void faireConnaissanceAvec(Humain autreHumain) {
+		direBonjour();
+		autreHumain.repondre(this);
+		memoriser(autreHumain);
+	}
+	
+	public void listerConnaissance() {
+		if (nbConnaissance == 0) {
+			parler("Je ne connais personne.");
+		} else {
+			String listeHumain = "Je connais beaucoup de monde dont : ";
+			for (int i = 0; i < nbConnaissance; i++) {
+				listeHumain += memoire[i].getNom();
+				if (i < nbConnaissance - 1) {
+					listeHumain += ", ";
+				}
+			}
+			parler(listeHumain);
+		}
+	}
+	
 }
